@@ -1,0 +1,21 @@
+<mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc">
+  <Panel headerText="{Recognition Result/text}" class="sapUiResponsiveMargin" width="auto">
+    <content>
+      <Label text="First Name" class="sapUiSmallMargin" />
+      <Input value="{Recognition Result/text}" valueLiveUpdate="true" width="200px" enabled="{/enabled}" />
+      <Label text="Last Name" class="sapUiSmallMargin" />
+      <Input value="{Recognition Result/text}" valueLiveUpdate="true" width="200px" enabled="{/enabled}" />
+      <CheckBox selected="true" text="Enabled" />
+<!--      <Table id="abc" items="{path: '/Recognition Result'}">
+      	<Columns>
+      		<Column>
+      			<Label text = "bla"></Label>
+      		</Column>
+      	</Columns>
+      	<ColumnListItem>
+      		<Text text = "{/text}"></Text>
+      	</ColumnListItem>
+      </Table>-->
+    </content>
+  </Panel>
+</mvc:View>

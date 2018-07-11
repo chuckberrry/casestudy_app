@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+
+		<title>case_study</title>
+
+    <script
+      id="sap-ui-bootstrap"
+      src="../resources/sap-ui-core.js"
+      data-sap-ui-theme="sap_bluecrystal"
+      data-sap-ui-libs="sap.m"
+      data-sap-ui-compatVersion="edge"
+      data-sap-ui-resourceroots='{ "cs.case_study": "./" }'
+    >
+    </script>
+    <script>
+    	      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+    </script>
+    <script>
+      var oModel = new sap.ui.model.json.JSONModel();
+	  oModel.loadData("http://ec2-34-229-87-138.compute-1.amazonaws.com/res.json")
+      // Assign the model object to the SAPUI5 core
+      sap.ui.getCore().setModel(oModel);
+
+      // Display the XML view called "App"
+      new sap.ui.core.mvc.XMLView({ viewName : "cs.case_study.view.View1" })
+        .placeAt("content");
+
+    </script>
+	</head>
+
+	<body class="sapUiBody" id="content">
+	</body>
+
+</html>
