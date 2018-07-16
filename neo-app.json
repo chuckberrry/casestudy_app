@@ -1,6 +1,22 @@
 {
   "welcomeFile": "/webapp/index.html",
   "routes": [
+  	 {
+      "path": "/AWS_case_study",
+      "target": {
+        "type": "destination",
+        "name": "AWS_case_study"
+      },
+      "description": "AWS"
+    },
+      	 {
+      "path": "/test_post",
+      "target": {
+        "type": "destination",
+        "name": "test_post"
+      },
+      "description": "test"
+    },
     {
       "path": "/resources",
       "target": {

@@ -2,25 +2,126 @@
 <html>
 
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 
-		<title>case_study</title>
-
-    <script id="sap-ui-bootstrap" src="../resources/sap-ui-core.js" data-sap-ui-theme="sap_bluecrystal" data-sap-ui-libs="sap.m" data-sap-ui-compatversion="edge" data-sap-ui-resourceroots="{ &quot;cs.case_study&quot;: &quot;./&quot; }">
-    </script>
+        <script src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js" id="sap-ui-bootstrap" data-sap-ui-libs="sap.ui.commons, sap.ui.unified, sap.m" data-sap-ui-theme="sap_bluecrystal">
+        </script>
     <script>
-    	      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
-    </script>
-    <script>
-      var oModel = new sap.ui.model.json.JSONModel();
-	  oModel.loadData("http://ec2-34-229-87-138.compute-1.amazonaws.com/res.json")
-      // Assign the model object to the SAPUI5 core
-      sap.ui.getCore().setModel(oModel);
+            var oBar = new sap.m.Bar( {
+          contentLeft : [ new sap.m.Image( {
+          src : "http://sap.github.io/openui5/images/icotxt_white_220x72_blue_open.png",
+          height : "45px"
+     }) ],
+     contentMiddle : [ new sap.m.Label( {
+          text : "{text}",
+          textAlign : "Left",
+          design : "Bold"
+     }) ],
+     contentRight : []
+});
 
-      // Display the XML view called "App"
+var oPage = new sap.m.Page("mainPage");
+oPage.setCustomHeader(oBar);
+oPage.placeAt("content_a")
+
+            // setting up model
+			var oModel = new sap.ui.model.json.JSONModel();
+			oModel.loadData('/AWS_case_study/res.json');
+			// Assign the model object to the SAPUI5 core
+			sap.ui.getCore().setModel(oModel);
+            
+            // setting up table
+              function openUploadDialog(){ 
+                var oUploadDialog = new sap.m.Dialog();
+                oUploadDialog.setTitle("Upload photo");
+                // prepare the FileUploader control
+                var oFileUploader = new sap.ui.unified.FileUploader({
+                    uploadUrl : "/AWS_case_study/images/upload",
+                    name: "image", 
+                    uploadOnChange: false,
+                    sendXHR: false,
+                    useMultipart: true,
+                    uploadComplete: function (oEvent) {
+                        var sResponse = oEvent.getParameter("response");
+                        if (sResponse) {
+                            oUploadDialog.close();
+                            sap.m.MessageBox.show("Return Code: " + sResponse, "Response", "Response");
+                        }
+                    }                    
+                });
+                // create a button to trigger the upload
+                var oTriggerButton = new sap.m.Button({
+                    text:'Upload',
+                    press:function() {
+                        // call the upload method
+                        //oFileUploader.insertHeaderParameter(new sap.ui.unified.FileUploaderParameter({name: "slug", value: oFileUploader.getValue() }));
+                        oFileUploader.upload();
+                    }
+                });
+               var oTriggerButton2 = new sap.m.Button({
+                    text:'Cancel',
+                    press:function() {
+                        oUploadDialog.close();
+                    }
+                });
+                oUploadDialog.addContent(oFileUploader);
+                oUploadDialog.addContent()
+                oUploadDialog.addContent(oTriggerButton);
+                oUploadDialog.addContent(oTriggerButton2);
+                oUploadDialog.open();
+            }
+
+var oButton1 = new sap.m.Button({
+	text : "Upload Image",
+	press : function() {openUploadDialog();}
+});
+
+oButton1.placeAt("content_a");
+
+	var oImage = new sap.m.Image({
+		id: "result_image",
+		src: "/AWS_case_study/images/demo_res.jpg",
+		alt: "result image",
+		width: "1280px", 
+		height: "768px",
+		decorative: false
+	});
+            
+var oButton2 = new sap.m.Button({
+	text : "Show Image with Textboxes",
+	press : function() {oImage.placeAt("content_b")}
+});
+// attach it to some element in the page
+oButton2.placeAt("content_a");
+
+var oButton3 = new sap.m.Button({
+	text : "Hide Image with Textboxes",
+	press : function() {oImage.placeAt("content_b")}
+});
+// attach it to some element in the page
+oButton3.placeAt("content_a");
+            
+var oTable = new sap.m.Table("table",{ 
+                  columns : [ new sap.m.Column({
+                                        header :[ new sap.m.Label({text : "Results"}) ]
+                                               })
+                            ]
+ });
+oTable.setModel(oModel);
+oTable.bindItems("/Recognition Result", new sap.m.ColumnListItem("listItem",{
+                              cells : [ 
+                                        new sap.m.Text({text : "{text}"})
+                                      ]
+ }));
+ 
+ 
+oTable.setMode(sap.m.ListMode.None);
+
+oTable.placeAt("content_c");
+/*                   // Display the XML view called "App"
       new sap.ui.core.mvc.XMLView({ viewName : "cs.case_study.view.View1" })
-        .placeAt("content");
+        .placeAt("content");*/
 
     </script>
 	<style>.facadebtn{display:inline-block;width:60px;height:60px;background-color:#009de0;border-radius:50px;text-align:center;box-shadow: 2px 2px 3px #999;opacity:.3;}
@@ -45,7 +146,10 @@ window._facadeSettings = {"cordova-plugin-device-orientation":false,"acceleromet
 <script src="https://webidecp-s0019269689trial.dispatcher.hanatrial.ondemand.com/hatdi_uf2d18766/hybrid/cordovafacade/floatingButton.js" type="text/javascript"></script>
 </head>
 
-	<body class="sapUiBody" id="content">
+	<body class="sapUiBody" role="application">
+    	<div id="content_a"></div>
+    	<div id="content_b"></div>
+		<div id="content_c"></div>
 	</body>
 
 </html>
