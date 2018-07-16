@@ -1,0 +1,40 @@
+{
+  "welcomeFile": "/webapp/index.html",
+  "routes": [
+  	 {
+      "path": "/AWS_case_study",
+      "target": {
+        "type": "destination",
+        "name": "AWS_case_study"
+      },
+      "description": "AWS"
+    },
+      	 {
+      "path": "/test_post",
+      "target": {
+        "type": "destination",
+        "name": "test_post"
+      },
+      "description": "test"
+    },
+    {
+      "path": "/resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/resources"
+      },
+      "description": "SAPUI5 Resources"
+    },
+    {
+      "path": "/test-resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/test-resources"
+      },
+      "description": "SAPUI5 Test Resources"
+    }
+  ],
+  "sendWelcomeFileRedirect": true
+}
