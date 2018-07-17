@@ -1,6 +1,6 @@
 sap.ui.define([
-	'jquery.sap.global',
-	'sap/m/MessageToast',
+	"jquery.sap.global",
+	"sap/m/MessageToast",
 	"sap/ui/core/mvc/Controller"
 ], function (jQuery, MessageToast, Controller) {
 	"use strict";
@@ -70,24 +70,6 @@ sap.ui.define([
 			oUploadDialog.open();
 		},
 
-		validate: function () {
-			var value1 = this.byId("Input1").getValue();
-			var value2 = this.byId("Input2").getValue();
-
-			if (0.0 < value1 && value1 <= 1.0) {
-				this.byId("Input1").setValueState(sap.ui.core.ValueState.None);
-
-			} else {
-				this.byId("Input1").setValueState(sap.ui.core.ValueState.Error);
-			}
-
-			if (0.0 < value2 && value2 <= 1.0) {
-				this.byId("Input2").setValueState(sap.ui.core.ValueState.None);
-			} else {
-				this.byId("Input2").setValueState(sap.ui.core.ValueState.Error);
-			}
-
-		},
 		onRun: function (evt) {
 			var input1 = this.byId("Input1").getValue();
 			var input2 = this.byId("Input2").getValue();

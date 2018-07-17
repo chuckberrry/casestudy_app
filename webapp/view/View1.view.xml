@@ -15,17 +15,17 @@
 				</customHeader>
 				<content>
 					<PullToRefresh id="pullToRefresh" refresh="handleRefresh"/>
-						<Button text="Upload Image" press="openUploadDialog"></Button>
-						<Button type="Emphasized" text="Run" press="onRun"/>
+					<Button text="Upload Image" press="openUploadDialog"></Button>
+					<Button type="Emphasized" text="Run" press="onRun"/>
 					<Panel expandable="true" expanded="false" headerText="Expert Mode" width="auto" class="sapUiResponsiveMargin">
 						<content>
 							<Label text="Pixel Threshold"/>
-							<Input valueLiveUpdate="true" liveChange="validate" id="Input1" class="sapUiSmallMarginBottom" type="Number"
-								placeholder="Enter pixel threshold between 0 and 1" enabled="true" editable="true"/>
+							<Slider id="Input1" enableTickmarks="true" value="0.6" width="100%" min="0.0" max="1.0" step= "0.05" showAdvancedTooltip="true" showHandleTooltip="false" inputsAsTooltips="true"
+								class="sapUiMediumMarginBottom"/>
 							<Label text="Link Threshold"/>
-							<Input valueLiveUpdate="true" liveChange="validate" id="Input2" class="sapUiSmallMarginBottom" type="Number"
-								placeholder="Enter link threshold between 0 and 1" enabled="true" editable="true"/>
-							<CheckBox text= "Check for auto align" id="ch1" selected="false" visible="true" enabled="true" name="align" activeHandling="true"></CheckBox>
+							<Slider id="Input2" enableTickmarks="true" value="0.5" width="100%" min="0.0" max="1.0" step= "0.05" showAdvancedTooltip="true" showHandleTooltip="false" inputsAsTooltips="true"
+								class="sapUiMediumMarginBottom"/>
+							<CheckBox text="Check for auto align" id="ch1" selected="false" visible="true" enabled="true" name="align" activeHandling="true"></CheckBox>
 						</content>
 					</Panel>
 					<Panel expandable="true" expanded="false" headerText="Show/Hide Textbox result" width="auto" class="sapUiResponsiveMargin">
@@ -35,25 +35,25 @@
 					</Panel>
 					<Panel expandable="true" expanded="false" headerText="Show/Hide Recognition Results" width="auto" class="sapUiResponsiveMargin">
 						<content>
-					<Table items="{/Recognition Result}">
-						<items>
-							<ColumnListItem>
-								<cells>
-									<Text text="{text}"></Text>
-								</cells>
-							</ColumnListItem>
-						</items>
-						<!-- sap.m.ListItemBase -->
-						<columns>
-							<Column>
-								<header>
-									<Text text="Results"></Text>
-								</header>
-							</Column>
-						</columns>
-						<!-- sap.m.Column -->
-					</Table>
-					</content>
+							<Table items="{/Recognition Result}">
+								<items>
+									<ColumnListItem>
+										<cells>
+											<Text text="{text}"></Text>
+										</cells>
+									</ColumnListItem>
+								</items>
+								<!-- sap.m.ListItemBase -->
+								<columns>
+									<Column>
+										<header>
+											<Text text="Results"></Text>
+										</header>
+									</Column>
+								</columns>
+								<!-- sap.m.Column -->
+							</Table>
+						</content>
 					</Panel>
 				</content>
 			</Page>
