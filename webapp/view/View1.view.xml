@@ -8,23 +8,24 @@
 						<contentLeft>
 							<Image class="sapUiSmallMarginBegin" src="img/cbs_logo.png" width="100px"/>
 						</contentLeft>
-						<contentMiddle>
-							<Title text="{i18n>title}"/>
-						</contentMiddle>
 					</Bar>
 				</customHeader>
+				<subHeader>
+					<Toolbar>
+						<PullToRefresh id="pullToRefresh" refresh="handleRefresh"/>
+					</Toolbar>
+				</subHeader>
 				<content>
-					<PullToRefresh id="pullToRefresh" refresh="handleRefresh"/>
 					<Button text="Upload Image" press="openUploadDialog"></Button>
 					<Button type="Emphasized" text="Run" press="onRun"/>
 					<Panel expandable="true" expanded="false" headerText="Expert Mode" width="auto" class="sapUiResponsiveMargin">
 						<content>
 							<Label text="Pixel Threshold"/>
-							<Slider id="Input1" enableTickmarks="true" value="0.6" width="100%" min="0.0" max="1.0" step= "0.05" showAdvancedTooltip="true" showHandleTooltip="false" inputsAsTooltips="true"
-								class="sapUiMediumMarginBottom"/>
+							<Slider id="Input1" enableTickmarks="true" value="0.6" width="100%" min="0.0" max="1.0" step="0.05" showAdvancedTooltip="true"
+								showHandleTooltip="false" inputsAsTooltips="true" class="sapUiMediumMarginBottom"/>
 							<Label text="Link Threshold"/>
-							<Slider id="Input2" enableTickmarks="true" value="0.5" width="100%" min="0.0" max="1.0" step= "0.05" showAdvancedTooltip="true" showHandleTooltip="false" inputsAsTooltips="true"
-								class="sapUiMediumMarginBottom"/>
+							<Slider id="Input2" enableTickmarks="true" value="0.5" width="100%" min="0.0" max="1.0" step="0.05" showAdvancedTooltip="true"
+								showHandleTooltip="false" inputsAsTooltips="true" class="sapUiMediumMarginBottom"/>
 							<CheckBox text="Check for auto align" id="ch1" selected="false" visible="true" enabled="true" name="align" activeHandling="true"></CheckBox>
 						</content>
 					</Panel>
