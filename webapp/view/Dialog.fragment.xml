@@ -9,9 +9,7 @@
 		items="{/Recognition Result}">
 		<ColumnListItem>
 			<cells>
-				<ObjectIdentifier
-					title="Results"
-					text="{text}" />
+			<Text text="{text}"></Text>
 			</cells>
 		</ColumnListItem>
 		<columns>
