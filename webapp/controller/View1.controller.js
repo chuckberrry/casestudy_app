@@ -1,8 +1,11 @@
 sap.ui.define([
 	"jquery.sap.global",
 	"sap/m/MessageToast",
-	"sap/ui/core/mvc/Controller"
-], function (jQuery, MessageToast, Controller) {
+	"sap/ui/core/mvc/Controller",
+	'sap/ui/core/Fragment',
+	'sap/ui/model/Filter',
+	'./Formatter'
+], function (jQuery, MessageToast, Controller,Formatter, Fragment, Filter) {
 	"use strict";
 
 	return Controller.extend("cs.case_study.controller.View1", {
@@ -102,6 +105,42 @@ sap.ui.define([
 				oModel.loadData("/AWS_case_study/res.json");
 				this.getView().byId("img1").setSrc("/AWS_case_study/images/demo_res.jpg?t=" + new Date().getTime());
 			}.bind(this), 1000);
+		},
+		
+
+		handleTableSelectDialogPress: function(oEvent) {
+			if (!this._oDialog) {
+				this._oDialog = sap.ui.xmlfragment("cs.case_study.view.Dialog", this);
+			}
+
+			// Multi-select if required
+			var bMultiSelect = !!oEvent.getSource().data("multi");
+			this._oDialog.setMultiSelect(bMultiSelect);
+
+			// Remember selections if required
+			var bRemember = !!oEvent.getSource().data("remember");
+			this._oDialog.setRememberSelections(bRemember);
+
+			this.getView().addDependent(this._oDialog);
+
+			// toggle compact style
+			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialog);
+			this._oDialog.open();
+		},
+
+		handleSearch: function(oEvent) {
+			var sValue = oEvent.getParameter("value");
+			var oFilter = new Filter("Results", sap.ui.model.FilterOperator.Contains, sValue);
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([oFilter]);
+		},
+
+		handleClose: function(oEvent) {
+			var aContexts = oEvent.getParameter("selectedContexts");
+			if (aContexts && aContexts.length) {
+				MessageToast.show("You have chosen " + aContexts.map(function(oContext) { return oContext.getObject().Name; }).join(", "));
+			}
+			oEvent.getSource().getBinding("items").filter([]);
 		}
 
 	});

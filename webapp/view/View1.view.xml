@@ -1,5 +1,5 @@
 <mvc:View controllerName="cs.case_study.controller.View1" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:u="sap.ui.unified"
-	xmlns:l="sap.ui.layout.form">
+	xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout.form">
 	<App id="idAppControl">
 		<pages>
 			<Page id="main" title="{i18n>title}" class="marginBoxContent">
@@ -56,6 +56,11 @@
 							</Table>
 						</content>
 					</Panel>
+					<Button class="sapUiSmallMarginBottom" text="Show Table Select Dialog (Multi)" press="handleTableSelectDialogPress">
+						<customData>
+							<core:CustomData key="multi" value="true"/>
+						</customData>
+					</Button>
 				</content>
 			</Page>
 		</pages>

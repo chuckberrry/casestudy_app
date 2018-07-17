@@ -1,0 +1,25 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<TableSelectDialog
+		noDataText="No Results Found"
+		title="Select Result"
+		confirm="handleClose"
+		search="handleSearch"
+		items="{/Recognition Result}">
+		<ColumnListItem>
+			<cells>
+				<ObjectIdentifier
+					title="Results"
+					text="{text}" />
+			</cells>
+		</ColumnListItem>
+		<columns>
+			<Column width="12em">
+				<header>
+					<Text text="Results" />
+				</header>
+			</Column>
+		</columns>
+	</TableSelectDialog>
+</core:FragmentDefinition>
