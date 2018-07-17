@@ -1,3 +1,62 @@
-<mvc:View controllerName="cs.case_study.controller.View1" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:u="sap.ui.unified" xmlns:l="sap.ui.layout.form">
-
+<mvc:View controllerName="cs.case_study.controller.View1" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:u="sap.ui.unified"
+	xmlns:l="sap.ui.layout.form">
+	<App id="idAppControl">
+		<pages>
+			<Page id="main" title="{i18n>title}" class="marginBoxContent">
+				<customHeader>
+					<Bar class="cbsHeaderBar">
+						<contentLeft>
+							<Image class="sapUiSmallMarginBegin" src="img/cbs_logo.png" width="100px"/>
+						</contentLeft>
+						<contentMiddle>
+							<Title text="{i18n>title}"/>
+						</contentMiddle>
+					</Bar>
+				</customHeader>
+				<content>
+					<PullToRefresh id="pullToRefresh" refresh="handleRefresh"/>
+						<Button text="Upload Image" press="openUploadDialog"></Button>
+						<Button type="Emphasized" text="Run" press="onRun"/>
+					<Panel expandable="true" expanded="false" headerText="Expert Mode" width="auto" class="sapUiResponsiveMargin">
+						<content>
+							<Label text="Pixel Threshold"/>
+							<Input valueLiveUpdate="true" liveChange="validate" id="Input1" class="sapUiSmallMarginBottom" type="Number"
+								placeholder="Enter pixel threshold between 0 and 1" enabled="true" editable="true"/>
+							<Label text="Link Threshold"/>
+							<Input valueLiveUpdate="true" liveChange="validate" id="Input2" class="sapUiSmallMarginBottom" type="Number"
+								placeholder="Enter link threshold between 0 and 1" enabled="true" editable="true"/>
+							<CheckBox text= "Check for auto align" id="ch1" selected="false" visible="true" enabled="true" name="align" activeHandling="true"></CheckBox>
+						</content>
+					</Panel>
+					<Panel expandable="true" expanded="false" headerText="Show/Hide Textbox result" width="auto" class="sapUiResponsiveMargin">
+						<content>
+							<Image id="img1" alt="alttextimage" src="/AWS_case_study/images/demo_res.jpg" visible="{/imgVisible}"/>
+						</content>
+					</Panel>
+					<Panel expandable="true" expanded="false" headerText="Show/Hide Recognition Results" width="auto" class="sapUiResponsiveMargin">
+						<content>
+					<Table items="{/Recognition Result}">
+						<items>
+							<ColumnListItem>
+								<cells>
+									<Text text="{text}"></Text>
+								</cells>
+							</ColumnListItem>
+						</items>
+						<!-- sap.m.ListItemBase -->
+						<columns>
+							<Column>
+								<header>
+									<Text text="Results"></Text>
+								</header>
+							</Column>
+						</columns>
+						<!-- sap.m.Column -->
+					</Table>
+					</content>
+					</Panel>
+				</content>
+			</Page>
+		</pages>
+	</App>
 </mvc:View>
