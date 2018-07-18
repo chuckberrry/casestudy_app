@@ -16,6 +16,13 @@
         "name": "test_post"
       },
       "description": "test"
+    },      	 {
+      "path": "/S4T",
+      "target": {
+        "type": "destination",
+        "name": "S4T"
+      },
+      "description": "S4T"
     },
     {
       "path": "/resources",

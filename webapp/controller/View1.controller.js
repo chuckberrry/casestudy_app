@@ -3,9 +3,8 @@ sap.ui.define([
 	"sap/m/MessageToast",
 	"sap/ui/core/mvc/Controller",
 	'sap/ui/core/Fragment',
-	'sap/ui/model/Filter',
-	'./Formatter'
-], function (jQuery, MessageToast, Controller,Formatter, Fragment, Filter) {
+	'sap/ui/model/Filter'
+], function (jQuery, MessageToast, Controller, Fragment, Filter) {
 	"use strict";
 
 	return Controller.extend("cs.case_study.controller.View1", {
@@ -76,6 +75,14 @@ sap.ui.define([
 		onRun: function (evt) {
 			var input1 = this.byId("Input1").getValue();
 			var input2 = this.byId("Input2").getValue();
+			var align;
+			var that = this;
+
+			if (this.byId("ch1").getSelected()) {
+				align = this.byId("ch1").getSelected();
+			} else {
+				align = this.byId("Input3").getValue();
+			}
 			if (input1 === "") {
 				input1 = 0.6;
 			}
@@ -90,25 +97,27 @@ sap.ui.define([
 				"data": {
 					"pixel_thres": input1,
 					"link_thres": input2,
-					"align": this.byId("ch1").getSelected()
+					"align": align
 				}
 			};
-
-			$.ajax(settings).done(function (response) {});
-			sap.m.MessageToast.show("Successfully Sent");
+			this.oDialog = sap.ui.xmlfragment("cs.case_study.view.BusyDialog", this);
+			this.oDialog.open();
+			$.ajax(settings).done(function (response) {
+				that.handleRefresh();
+				that.oDialog.close();
+				sap.m.MessageToast.show(response.message);
+			});
 		},
 
 		handleRefresh: function (evt) {
 			setTimeout(function () {
-				this.byId("pullToRefresh").hide();
 				var oModel = this.getView().getModel();
 				oModel.loadData("/AWS_case_study/res.json");
 				this.getView().byId("img1").setSrc("/AWS_case_study/images/demo_res.jpg?t=" + new Date().getTime());
 			}.bind(this), 1000);
 		},
-		
 
-		handleTableSelectDialogPress: function(oEvent) {
+		handleTableSelectDialogPress: function (oEvent) {
 			if (!this._oDialog) {
 				this._oDialog = sap.ui.xmlfragment("cs.case_study.view.Dialog", this);
 			}
@@ -127,18 +136,31 @@ sap.ui.define([
 			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oDialog);
 			this._oDialog.open();
 		},
-
-		handleSearch: function(oEvent) {
-			var sValue = oEvent.getParameter("value");
-			var oFilter = new Filter("Results", sap.ui.model.FilterOperator.Contains, sValue);
-			var oBinding = oEvent.getSource().getBinding("items");
-			oBinding.filter([oFilter]);
+		onExit: function () {
+			if (this._oDialog) {
+				this._oDialog.destroy();
+			}
 		},
 
-		handleClose: function(oEvent) {
+		handleSearch: function (oEvent) {
+			// create model filter
+			var filters = [];
+			var query = oEvent.getParameter("value");
+			if (query && query.length > 0) {
+				var filter = new sap.ui.model.Filter("text", sap.ui.model.FilterOperator.Contains, query);
+				filters.push(filter);
+			}
+
+			// update list binding
+			var list = oEvent.getSource();
+			var binding = list.getBinding("items");
+			binding.filter(filters);
+		},
+
+		handleClose: function (oEvent) {
 			var aContexts = oEvent.getParameter("selectedContexts");
 			if (aContexts && aContexts.length) {
-				MessageToast.show("You have chosen " + aContexts.map(function(oContext) { return oContext.getObject().Name; }).join(", "));
+				MessageToast.show("You have chosen " + aContexts.map(function(oContext) { return oContext.getObject().text; }).join(", "));
 			}
 			oEvent.getSource().getBinding("items").filter([]);
 		}

@@ -6,10 +6,13 @@
 		title="Select Result"
 		confirm="handleClose"
 		search="handleSearch"
-		items="{/Recognition Result}">
+		items="{/Recognition Result}"
+		id = "list"
+		>
 		<ColumnListItem>
 			<cells>
-			<Text text="{text}"></Text>
+			<ObjectIdentifier
+					text="{text}" />
 			</cells>
 		</ColumnListItem>
 		<columns>
