@@ -14,7 +14,7 @@
 					<Button text="Upload Image" press="openUploadDialog"></Button>
 					<Button type="Emphasized" text="Run" press="onRun"/>
 					<VBox>
-						<Image id="img1" alt="Image Preview" src="/AWS_case_study/preview/demo.jpg" width="14rem" height="9rem" visible="{/afterUpload}"/>
+						<Image id="img1" alt="Image Preview" src="/AWS_case_study/preview/demo.jpg" width="12rem" height="9rem" visible="{/afterUpload}"/>
 					</VBox>
 					<Panel expandable="true" expanded="false" headerText="Expert Mode" width="auto" class="sapUiResponsiveMargin">
 						<content>
