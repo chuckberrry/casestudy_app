@@ -1,19 +1,22 @@
 sap.ui.define([
-	"jquery.sap.global",
 	"sap/m/MessageToast",
 	"sap/ui/core/mvc/Controller",
-	'sap/ui/core/Fragment',
-	'sap/ui/model/Filter'
-], function (jQuery, MessageToast, Controller, Fragment, Filter) {
+	"sap/ui/core/Fragment",
+	"sap/ui/model/Filter"
+], function (MessageToast, Controller, Fragment, Filter) {
 	"use strict";
 
 	return Controller.extend("cs.case_study.controller.View1", {
 
 		onInit: function () {
-			var oModel = new sap.ui.model.json.JSONModel();
-			oModel.loadData("/AWS_case_study/res.json");
-			// Assign the model object to the SAPUI5 core
-			this.getView().setModel(oModel);
+			var oModel = new sap.ui.model.json.JSONModel(), oView = this.getView();
+			
+			$.get("/AWS_case_study/res.json", function (data) {
+				oModel.setData(data);
+				oView.setModel(oModel);
+				oView.getModel().setProperty("/afterUpload", false);
+				oView.getModel().setProperty("/afterRun", false);
+			});
 		},
 
 		handleValueChange: function (oEvent) {
@@ -22,6 +25,7 @@ sap.ui.define([
 		},
 
 		openUploadDialog: function () {
+			var that = this;
 			var oUploadDialog = new sap.m.Dialog();
 			oUploadDialog.setTitle("Upload photo");
 			// prepare the FileUploader control
@@ -47,6 +51,8 @@ sap.ui.define([
 					var sResponse = oEvent.getParameter("response");
 					if (sResponse) {
 						oUploadDialog.close();
+						that.getView().getModel().setProperty("/afterUpload", true);
+						that.getView().byId("img1").setSrc("/AWS_case_study/preview/demo.jpg?t=" + new Date().getTime());
 						sap.m.MessageToast.show("Upload complete");
 					}
 				}
@@ -105,6 +111,7 @@ sap.ui.define([
 			$.ajax(settings).done(function (response) {
 				that.handleRefresh();
 				that.oDialog.close();
+				that.getView().getModel().setProperty("/afterRun", true);
 				sap.m.MessageToast.show(response.message);
 			});
 		},
@@ -113,7 +120,7 @@ sap.ui.define([
 			setTimeout(function () {
 				var oModel = this.getView().getModel();
 				oModel.loadData("/AWS_case_study/res.json");
-				this.getView().byId("img1").setSrc("/AWS_case_study/images/demo_res.jpg?t=" + new Date().getTime());
+				this.getView().byId("img2").setSrc("/AWS_case_study/images/demo_res.jpg?t=" + new Date().getTime());
 			}.bind(this), 1000);
 		},
 
@@ -160,7 +167,9 @@ sap.ui.define([
 		handleClose: function (oEvent) {
 			var aContexts = oEvent.getParameter("selectedContexts");
 			if (aContexts && aContexts.length) {
-				MessageToast.show("You have chosen " + aContexts.map(function(oContext) { return oContext.getObject().text; }).join(", "));
+				MessageToast.show("You have chosen " + aContexts.map(function (oContext) {
+					return oContext.getObject().text;
+				}).join(", "));
 			}
 			oEvent.getSource().getBinding("items").filter([]);
 		}

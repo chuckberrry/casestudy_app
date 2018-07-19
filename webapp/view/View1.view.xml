@@ -13,6 +13,9 @@
 				<content>
 					<Button text="Upload Image" press="openUploadDialog"></Button>
 					<Button type="Emphasized" text="Run" press="onRun"/>
+					<VBox>
+						<Image id="img1" alt="Image Preview" src="/AWS_case_study/preview/demo.jpg" width="14rem" height="9rem" visible="{/afterUpload}"/>
+					</VBox>
 					<Panel expandable="true" expanded="false" headerText="Expert Mode" width="auto" class="sapUiResponsiveMargin">
 						<content>
 							<Label text="Pixel Threshold"/>
@@ -21,20 +24,20 @@
 							<Label text="Link Threshold"/>
 							<Slider id="Input2" enableTickmarks="true" value="0.5" width="100%" min="0.0" max="1.0" step="0.05" showAdvancedTooltip="true"
 								showHandleTooltip="false" inputsAsTooltips="true" class="sapUiMediumMarginBottom"/>
-								<Label text="Change the angle of the Image"/>
-								<Slider id="Input3" value="0" width="100%" min="0.0" max="180" showAdvancedTooltip="true"
-								showHandleTooltip="false" inputsAsTooltips="true" class="sapUiMediumMarginBottom"/>
+							<Label text="Change the angle of the Image"/>
+							<Slider id="Input3" value="0" width="100%" min="0.0" max="180" showAdvancedTooltip="true" showHandleTooltip="false" inputsAsTooltips="true"
+								class="sapUiMediumMarginBottom"/>
 							<CheckBox text="Check for auto align" id="ch1" selected="false" visible="true" enabled="true" name="align" activeHandling="true"></CheckBox>
 						</content>
 					</Panel>
 					<Panel expandable="true" expanded="false" headerText="Show/Hide Textbox result" width="auto" class="sapUiResponsiveMargin">
 						<content>
-							<Image id="img1" alt="alttextimage" src="/AWS_case_study/images/demo_res.jpg" width= "1280px" height= "768px"/>
+							<Image id="img2" visible = "{/afterRun}" alt="Textbox Image" src="/AWS_case_study/images/demo_res.jpg" width="36rem" height="27rem"/>
 						</content>
 					</Panel>
 					<Panel expandable="true" expanded="false" headerText="Show/Hide Recognition Results" width="auto" class="sapUiResponsiveMargin">
 						<content>
-							<Table items="{/Recognition Result}">
+							<Table items="{/Recognition Result}" visible = "{/afterRun}">
 								<items>
 									<ColumnListItem>
 										<cells>
@@ -54,7 +57,7 @@
 							</Table>
 						</content>
 					</Panel>
-					<Button class="sapUiSmallMarginBottom" text="Show Table Select Dialog" press="handleTableSelectDialogPress">
+					<Button class="sapUiSmallMarginBottom" text="Show Table Select Dialog" press="handleTableSelectDialogPress" visible = "{/afterRun}">
 						<customData>
 							<core:CustomData key="multi" value="true"/>
 						</customData>
