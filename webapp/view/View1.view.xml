@@ -6,7 +6,7 @@
 				<customHeader>
 					<Bar class="cbsHeaderBar">
 						<contentLeft>
-							<Image class="sapUiSmallMarginBegin" src="img/cbs_logo.png" width="100px"/>
+							<Image class="sapUiSmallMarginBegin" alt="logo" src="img/cbs_logo.png" width="100px"/>
 						</contentLeft>
 					</Bar>
 				</customHeader>
@@ -32,12 +32,12 @@
 					</Panel>
 					<Panel expandable="true" expanded="false" headerText="Show/Hide Textbox result" width="auto" class="sapUiResponsiveMargin">
 						<content>
-							<Image id="img2" visible = "{/afterRun}" alt="Textbox Image" src="/AWS_case_study/images/demo_res.jpg" width="36rem" height="27rem"/>
+							<Image id="img2" visible="{/afterRun}" alt="Textbox Image" src="/AWS_case_study/images/demo_res.jpg" width="36rem" height="27rem"/>
 						</content>
 					</Panel>
 					<Panel expandable="true" expanded="false" headerText="Show/Hide Recognition Results" width="auto" class="sapUiResponsiveMargin">
 						<content>
-							<Table items="{/Recognition Result}" visible = "{/afterRun}">
+							<Table items="{/Recognition Result}" visible="{/afterRun}">
 								<items>
 									<ColumnListItem>
 										<cells>
@@ -45,7 +45,6 @@
 										</cells>
 									</ColumnListItem>
 								</items>
-								<!-- sap.m.ListItemBase -->
 								<columns>
 									<Column>
 										<header>
@@ -53,15 +52,15 @@
 										</header>
 									</Column>
 								</columns>
-								<!-- sap.m.Column -->
 							</Table>
 						</content>
 					</Panel>
-					<Button class="sapUiSmallMarginBottom" text="Show Table Select Dialog" press="handleTableSelectDialogPress" visible = "{/afterRun}">
+					<Button class="sapUiSmallMarginBottom" text="Show Table Select Dialog" press="handleTableSelectDialogPress" visible="{/afterRun}">
 						<customData>
 							<core:CustomData key="multi" value="true"/>
 						</customData>
 					</Button>
+					<Button class="sapUiSmallMarginBottom" text="Send" press="onSend" visible="true"></Button>
 				</content>
 			</Page>
 		</pages>

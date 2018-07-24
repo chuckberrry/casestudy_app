@@ -9,8 +9,9 @@ sap.ui.define([
 	return Controller.extend("cs.case_study.controller.View1", {
 
 		onInit: function () {
-			var oModel = new sap.ui.model.json.JSONModel(), oView = this.getView();
-			
+			var oModel = new sap.ui.model.json.JSONModel(),
+				oView = this.getView();
+
 			$.get("/AWS_case_study/res.json", function (data) {
 				oModel.setData(data);
 				oView.setModel(oModel);
@@ -45,7 +46,7 @@ sap.ui.define([
 						" is not supported. Choose one of the following types: " +
 						sSupportedFileTypes);
 				},
-				placeholder: "Choose a file for Upload...",
+				placeholder: "Choose an Image...",
 				fileType: "png,jpg",
 				uploadComplete: function (oEvent) {
 					var sResponse = oEvent.getParameter("response");
@@ -83,9 +84,10 @@ sap.ui.define([
 			var input2 = this.byId("Input2").getValue();
 			var align;
 			var that = this;
+			var check = this.byId("ch1").getSelected();
 
-			if (this.byId("ch1").getSelected()) {
-				align = this.byId("ch1").getSelected();
+			if (check) {
+				align = check;
 			} else {
 				align = this.byId("Input3").getValue();
 			}
@@ -113,6 +115,9 @@ sap.ui.define([
 				that.oDialog.close();
 				that.getView().getModel().setProperty("/afterRun", true);
 				sap.m.MessageToast.show(response.message);
+			}).fail(function (response) {
+				that.oDialog.close();
+				sap.m.MessageToast.show("Error: " + response.message);
 			});
 		},
 
@@ -172,6 +177,25 @@ sap.ui.define([
 				}).join(", "));
 			}
 			oEvent.getSource().getBinding("items").filter([]);
+		},
+		
+		onSend: function (evt) {
+			var sBody =
+			'<?xml version="1.0" encoding="UTF-8"?><SERVICENOTIFICATION_CREATEFR01><IDOC BEGIN="1"><EDI_DC40 SEGMENT="1"><TABNAM></TABNAM><DOCNUM></DOCNUM><DIRECT>2</DIRECT><IDOCTYP>SERVICENOTIFICATION_CREATEFR01</IDOCTYP><MESTYP>SERVICENOTIFICATION_CREATEFROM</MESTYP><SNDPOR>SCPI</SNDPOR><SNDPRT>LS</SNDPRT><SNDPFC></SNDPFC><SNDPRN>SCPI</SNDPRN><RCVPOR>SAPS4T</RCVPOR><RCVPRT>LS</RCVPRT><RCVPRN>S4TCLNT200</RCVPRN><SERIAL></SERIAL></EDI_DC40><E1SERVICENOTIFICATION_CREAT SEGMENT="1"><NOTIF_TYPE>Z1</NOTIF_TYPE><E1BP2080_NOTHDRI SEGMENT="1"><EQUIPMENT>EQUI1234</EQUIPMENT><SHORT_TEXT>Meldung Instandhaltungsbedarf</SHORT_TEXT></E1BP2080_NOTHDRI><E1BP2080_NOTITEMI SEGMENT="1"><DESCRIPT>Fehler bei:</DESCRIPT><EQUIPMENT>123</EQUIPMENT></E1BP2080_NOTITEMI><E1BP2080_NOTFULLTXTI SEGMENT=""><TEXT_LINE>Textzeile</TEXT_LINE></E1BP2080_NOTFULLTXTI></E1SERVICENOTIFICATION_CREAT><E1IDOCENHANCEMENT SEGMENT="1"><IDENTIFIER></IDENTIFIER><DATA></DATA></E1IDOCENHANCEMENT></IDOC></SERVICENOTIFICATION_CREATEFR01>';
+			$.ajax({
+				url: "/S4T_IDOC/sap/bc/srt/idoc._xml?sap-client=200",
+				method: "POST",
+				data: sBody,
+				headers: {
+					"Content-Type": "text/xml"
+				},
+				success: function (oData) {
+					debugger;
+				},
+				error: function (oError) {
+					debugger;
+				}
+			});
 		}
 
 	});
