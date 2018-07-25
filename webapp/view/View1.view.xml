@@ -30,9 +30,15 @@
 							<CheckBox text="Check for auto align" id="ch1" selected="false" visible="true" enabled="true" name="align" activeHandling="true"></CheckBox>
 						</content>
 					</Panel>
-					<Panel expandable="true" expanded="false" headerText="Show/Hide Textbox result" width="auto" class="sapUiResponsiveMargin">
+					<Panel expandable="true" expanded="false" headerText="Show/Hide Textbox Result" width="auto" class="sapUiResponsiveMargin">
 						<content>
 							<Image id="img2" visible="{/afterRun}" alt="Textbox Image" src="/AWS_case_study/images/demo_res.jpg" width="36rem" height="27rem"/>
+						</content>
+					</Panel>
+					<Panel expandable="true" expanded="false" headerText="Show/Hide Image with Results" width="auto" class="sapUiResponsiveMargin">
+						<content>
+							<Image id="img3" visible="{/afterRun}" alt="Textbox Image with Results" src="/AWS_case_study/images/demo_text.png" width="36rem"
+								height="27rem"/>
 						</content>
 					</Panel>
 					<Panel expandable="true" expanded="false" headerText="Show/Hide Recognition Results" width="auto" class="sapUiResponsiveMargin">
@@ -55,12 +61,13 @@
 							</Table>
 						</content>
 					</Panel>
-					<Button class="sapUiSmallMarginBottom" text="Show Table Select Dialog" press="handleTableSelectDialogPress" visible="{/afterRun}">
+					<Label text="Notification Service Order" labelFor="inputText" visible="{/afterRun}"/>
+					<Input id="inputText" type="Text" visible="{/afterRun}" class="sapUiSmallMarginBottom" placeholder="Enter description ..."/>
+					<Button class="sapUiSmallMarginBottom" text="Show Select Dialog" press="handleTableSelectDialogPress" visible="{/afterRun}">
 						<customData>
 							<core:CustomData key="multi" value="true"/>
 						</customData>
 					</Button>
-					<Button class="sapUiSmallMarginBottom" text="Send" press="onSend" visible="true"></Button>
 				</content>
 			</Page>
 		</pages>

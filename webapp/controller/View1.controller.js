@@ -17,6 +17,7 @@ sap.ui.define([
 				oView.setModel(oModel);
 				oView.getModel().setProperty("/afterUpload", false);
 				oView.getModel().setProperty("/afterRun", false);
+				oView.getModel().setProperty("/afterTextinImage", false);
 			});
 		},
 
@@ -47,7 +48,7 @@ sap.ui.define([
 						sSupportedFileTypes);
 				},
 				placeholder: "Choose an Image...",
-				fileType: "png,jpg",
+				fileType: "png,jpg,jpeg",
 				uploadComplete: function (oEvent) {
 					var sResponse = oEvent.getParameter("response");
 					if (sResponse) {
@@ -80,6 +81,11 @@ sap.ui.define([
 		},
 
 		onRun: function (evt) {
+			var aftUp = this.getView().getModel().getProperty("/afterUpload");
+			if(!aftUp){
+				sap.m.MessageToast.show("Error: Choose an Image first!");
+				return;
+			}
 			var input1 = this.byId("Input1").getValue();
 			var input2 = this.byId("Input2").getValue();
 			var align;
@@ -120,12 +126,13 @@ sap.ui.define([
 				sap.m.MessageToast.show("Error: " + response.message);
 			});
 		},
-
+		
 		handleRefresh: function (evt) {
 			setTimeout(function () {
 				var oModel = this.getView().getModel();
 				oModel.loadData("/AWS_case_study/res.json");
 				this.getView().byId("img2").setSrc("/AWS_case_study/images/demo_res.jpg?t=" + new Date().getTime());
+				this.getView().byId("img3").setSrc("/AWS_case_study/images/demo_text.png?t=" + new Date().getTime());
 			}.bind(this), 1000);
 		},
 
@@ -171,31 +178,26 @@ sap.ui.define([
 
 		handleClose: function (oEvent) {
 			var aContexts = oEvent.getParameter("selectedContexts");
+			var nr;
 			if (aContexts && aContexts.length) {
-				MessageToast.show("You have chosen " + aContexts.map(function (oContext) {
+				nr = aContexts.map(function (oContext) {
 					return oContext.getObject().text;
-				}).join(", "));
+				}).join("");
+			
 			}
-			oEvent.getSource().getBinding("items").filter([]);
-		},
-		
-		onSend: function (evt) {
+			var descr = this.byId("inputText").getValue();
 			var sBody =
-			'<?xml version="1.0" encoding="UTF-8"?><SERVICENOTIFICATION_CREATEFR01><IDOC BEGIN="1"><EDI_DC40 SEGMENT="1"><TABNAM></TABNAM><DOCNUM></DOCNUM><DIRECT>2</DIRECT><IDOCTYP>SERVICENOTIFICATION_CREATEFR01</IDOCTYP><MESTYP>SERVICENOTIFICATION_CREATEFROM</MESTYP><SNDPOR>SCPI</SNDPOR><SNDPRT>LS</SNDPRT><SNDPFC></SNDPFC><SNDPRN>SCPI</SNDPRN><RCVPOR>SAPS4T</RCVPOR><RCVPRT>LS</RCVPRT><RCVPRN>S4TCLNT200</RCVPRN><SERIAL></SERIAL></EDI_DC40><E1SERVICENOTIFICATION_CREAT SEGMENT="1"><NOTIF_TYPE>Z1</NOTIF_TYPE><E1BP2080_NOTHDRI SEGMENT="1"><EQUIPMENT>EQUI1234</EQUIPMENT><SHORT_TEXT>Meldung Instandhaltungsbedarf</SHORT_TEXT></E1BP2080_NOTHDRI><E1BP2080_NOTITEMI SEGMENT="1"><DESCRIPT>Fehler bei:</DESCRIPT><EQUIPMENT>123</EQUIPMENT></E1BP2080_NOTITEMI><E1BP2080_NOTFULLTXTI SEGMENT=""><TEXT_LINE>Textzeile</TEXT_LINE></E1BP2080_NOTFULLTXTI></E1SERVICENOTIFICATION_CREAT><E1IDOCENHANCEMENT SEGMENT="1"><IDENTIFIER></IDENTIFIER><DATA></DATA></E1IDOCENHANCEMENT></IDOC></SERVICENOTIFICATION_CREATEFR01>';
+			'<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Header/><soapenv:Body><SERVICENOTIFICATION_CREATEFR01><IDOC BEGIN="1"><EDI_DC40 SEGMENT="1"><TABNAM/><DOCNUM/><DIRECT>2</DIRECT><IDOCTYP>SERVICENOTIFICATION_CREATEFR01</IDOCTYP><MESTYP>SERVICENOTIFICATION_CREATEFROM</MESTYP><SNDPOR>SCPI</SNDPOR><SNDPRT>LS</SNDPRT><SNDPFC/><SNDPRN>SCPI</SNDPRN><RCVPOR>SAPS4T</RCVPOR><RCVPRT>LS</RCVPRT><RCVPRN>S4TCLNT200</RCVPRN><SERIAL/></EDI_DC40><E1SERVICENOTIFICATION_CREAT SEGMENT="1"><NOTIF_TYPE>Z1</NOTIF_TYPE><E1BP2080_NOTHDRI SEGMENT="1"><EQUIPMENT>' + nr + '</EQUIPMENT><SHORT_TEXT>Meldung Instandhaltungsbedarf</SHORT_TEXT></E1BP2080_NOTHDRI><E1BP2080_NOTITEMI SEGMENT="1"><DESCRIPT>' + descr + '</DESCRIPT><EQUIPMENT>' + nr + '</EQUIPMENT></E1BP2080_NOTITEMI><E1BP2080_NOTFULLTXTI SEGMENT=""><TEXT_LINE>Textzeile</TEXT_LINE></E1BP2080_NOTFULLTXTI></E1SERVICENOTIFICATION_CREAT><E1IDOCENHANCEMENT SEGMENT="1"><IDENTIFIER/><DATA/></E1IDOCENHANCEMENT></IDOC></SERVICENOTIFICATION_CREATEFR01></soapenv:Body></soapenv:Envelope>';
 			$.ajax({
-				url: "/S4T_IDOC/sap/bc/srt/idoc._xml?sap-client=200",
+				url: "/S4T_IDOC/sap/bc/srt/idoc?sap-client=200",
 				method: "POST",
 				data: sBody,
 				headers: {
 					"Content-Type": "text/xml"
-				},
-				success: function (oData) {
-					debugger;
-				},
-				error: function (oError) {
-					debugger;
 				}
 			});
+			sap.m.MessageToast.show('Succesfully sent Service Notification!\nDescription: "' + descr + '"\nEquipmentnumber: "' + nr + '"');
+			oEvent.getSource().getBinding("items").filter([]);
 		}
 
 	});

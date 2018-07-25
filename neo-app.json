@@ -25,6 +25,14 @@
       "description": "S4T"
     },
     {
+      "path": "/S4T_IDOC",
+      "target": {
+        "type": "destination",
+        "name": "S4T_IDOC"
+      },
+      "description": "S4T_IDOC"
+    },
+    {
       "path": "/resources",
       "target": {
         "type": "service",

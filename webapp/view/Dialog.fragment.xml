@@ -3,7 +3,7 @@
 	xmlns:core="sap.ui.core">
 	<TableSelectDialog
 		noDataText="No Results Found"
-		title="Select Result"
+		title="Select Notification Number"
 		confirm="handleClose"
 		search="handleSearch"
 		items="{/Recognition Result}"
