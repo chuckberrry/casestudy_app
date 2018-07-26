@@ -19,13 +19,13 @@
 					<Panel expandable="true" expanded="false" headerText="Expert Mode" width="auto" class="sapUiResponsiveMargin">
 						<content>
 							<Label text="Pixel Threshold"/>
-							<Slider id="Input1" enableTickmarks="true" value="0.6" width="100%" min="0.0" max="1.0" step="0.05" showAdvancedTooltip="true"
+							<Slider id="Input1" enableTickmarks="true" value="0.6" width="100%" min="0.1" max="1.0" step="0.05" showAdvancedTooltip="true"
 								showHandleTooltip="false" inputsAsTooltips="true" class="sapUiMediumMarginBottom"/>
 							<Label text="Link Threshold"/>
-							<Slider id="Input2" enableTickmarks="true" value="0.5" width="100%" min="0.0" max="1.0" step="0.05" showAdvancedTooltip="true"
+							<Slider id="Input2" enableTickmarks="true" value="0.5" width="100%" min="0.1" max="1.0" step="0.05" showAdvancedTooltip="true"
 								showHandleTooltip="false" inputsAsTooltips="true" class="sapUiMediumMarginBottom"/>
 							<Label text="Change the angle of the Image"/>
-							<Slider id="Input3" value="0" width="100%" min="0.0" max="180" showAdvancedTooltip="true" showHandleTooltip="false" inputsAsTooltips="true"
+							<Slider id="Input3" value="0" width="100%" min="0" max="180" showAdvancedTooltip="true" showHandleTooltip="false" inputsAsTooltips="true"
 								class="sapUiMediumMarginBottom"/>
 							<CheckBox text="Check for auto align" id="ch1" selected="false" visible="true" enabled="true" name="align" activeHandling="true"></CheckBox>
 						</content>

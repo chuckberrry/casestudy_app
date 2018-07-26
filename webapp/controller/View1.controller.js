@@ -17,7 +17,6 @@ sap.ui.define([
 				oView.setModel(oModel);
 				oView.getModel().setProperty("/afterUpload", false);
 				oView.getModel().setProperty("/afterRun", false);
-				oView.getModel().setProperty("/afterTextinImage", false);
 			});
 		},
 
@@ -64,7 +63,6 @@ sap.ui.define([
 				text: "Upload",
 				press: function () {
 					// call the upload method
-					//oFileUploader.insertHeaderParameter(new sap.ui.unified.FileUploaderParameter({name: "slug", value: oFileUploader.getValue() }));
 					oFileUploader.upload();
 				}
 			});
@@ -81,15 +79,15 @@ sap.ui.define([
 		},
 
 		onRun: function (evt) {
-			var aftUp = this.getView().getModel().getProperty("/afterUpload");
-			if(!aftUp){
+			var that = this;
+/*			var aftUp = that.getView().getModel().getProperty("/afterUpload");
+			if (!aftUp) {
 				sap.m.MessageToast.show("Error: Choose an Image first!");
 				return;
-			}
+			}*/
 			var input1 = this.byId("Input1").getValue();
 			var input2 = this.byId("Input2").getValue();
 			var align;
-			var that = this;
 			var check = this.byId("ch1").getSelected();
 
 			if (check) {
@@ -126,7 +124,7 @@ sap.ui.define([
 				sap.m.MessageToast.show("Error: " + response.message);
 			});
 		},
-		
+
 		handleRefresh: function (evt) {
 			setTimeout(function () {
 				var oModel = this.getView().getModel();
@@ -144,10 +142,6 @@ sap.ui.define([
 			// Multi-select if required
 			var bMultiSelect = !!oEvent.getSource().data("multi");
 			this._oDialog.setMultiSelect(bMultiSelect);
-
-			// Remember selections if required
-			var bRemember = !!oEvent.getSource().data("remember");
-			this._oDialog.setRememberSelections(bRemember);
 
 			this.getView().addDependent(this._oDialog);
 
@@ -183,11 +177,15 @@ sap.ui.define([
 				nr = aContexts.map(function (oContext) {
 					return oContext.getObject().text;
 				}).join("");
-			
+
 			}
 			var descr = this.byId("inputText").getValue();
 			var sBody =
-			'<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Header/><soapenv:Body><SERVICENOTIFICATION_CREATEFR01><IDOC BEGIN="1"><EDI_DC40 SEGMENT="1"><TABNAM/><DOCNUM/><DIRECT>2</DIRECT><IDOCTYP>SERVICENOTIFICATION_CREATEFR01</IDOCTYP><MESTYP>SERVICENOTIFICATION_CREATEFROM</MESTYP><SNDPOR>SCPI</SNDPOR><SNDPRT>LS</SNDPRT><SNDPFC/><SNDPRN>SCPI</SNDPRN><RCVPOR>SAPS4T</RCVPOR><RCVPRT>LS</RCVPRT><RCVPRN>S4TCLNT200</RCVPRN><SERIAL/></EDI_DC40><E1SERVICENOTIFICATION_CREAT SEGMENT="1"><NOTIF_TYPE>Z1</NOTIF_TYPE><E1BP2080_NOTHDRI SEGMENT="1"><EQUIPMENT>' + nr + '</EQUIPMENT><SHORT_TEXT>Meldung Instandhaltungsbedarf</SHORT_TEXT></E1BP2080_NOTHDRI><E1BP2080_NOTITEMI SEGMENT="1"><DESCRIPT>' + descr + '</DESCRIPT><EQUIPMENT>' + nr + '</EQUIPMENT></E1BP2080_NOTITEMI><E1BP2080_NOTFULLTXTI SEGMENT=""><TEXT_LINE>Textzeile</TEXT_LINE></E1BP2080_NOTFULLTXTI></E1SERVICENOTIFICATION_CREAT><E1IDOCENHANCEMENT SEGMENT="1"><IDENTIFIER/><DATA/></E1IDOCENHANCEMENT></IDOC></SERVICENOTIFICATION_CREATEFR01></soapenv:Body></soapenv:Envelope>';
+				'<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Header/><soapenv:Body><SERVICENOTIFICATION_CREATEFR01><IDOC BEGIN="1"><EDI_DC40 SEGMENT="1"><TABNAM/><DOCNUM/><DIRECT>2</DIRECT><IDOCTYP>SERVICENOTIFICATION_CREATEFR01</IDOCTYP><MESTYP>SERVICENOTIFICATION_CREATEFROM</MESTYP><SNDPOR>SCPI</SNDPOR><SNDPRT>LS</SNDPRT><SNDPFC/><SNDPRN>SCPI</SNDPRN><RCVPOR>SAPS4T</RCVPOR><RCVPRT>LS</RCVPRT><RCVPRN>S4TCLNT200</RCVPRN><SERIAL/></EDI_DC40><E1SERVICENOTIFICATION_CREAT SEGMENT="1"><NOTIF_TYPE>Z1</NOTIF_TYPE><E1BP2080_NOTHDRI SEGMENT="1"><EQUIPMENT>' +
+				nr +
+				'</EQUIPMENT><SHORT_TEXT>Meldung Instandhaltungsbedarf</SHORT_TEXT></E1BP2080_NOTHDRI><E1BP2080_NOTITEMI SEGMENT="1"><DESCRIPT>' +
+				descr + '</DESCRIPT><EQUIPMENT>' + nr +
+				'</EQUIPMENT></E1BP2080_NOTITEMI><E1BP2080_NOTFULLTXTI SEGMENT=""><TEXT_LINE>Textzeile</TEXT_LINE></E1BP2080_NOTFULLTXTI></E1SERVICENOTIFICATION_CREAT><E1IDOCENHANCEMENT SEGMENT="1"><IDENTIFIER/><DATA/></E1IDOCENHANCEMENT></IDOC></SERVICENOTIFICATION_CREATEFR01></soapenv:Body></soapenv:Envelope>';
 			$.ajax({
 				url: "/S4T_IDOC/sap/bc/srt/idoc?sap-client=200",
 				method: "POST",
