@@ -7,16 +7,20 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("cs.case_study.controller.View1", {
-
+	formatter: function(path){ // all parameters are strings
+                          return path + this.getView().getModel().getProperty("/id_run"); 
+               },
+               
 		onInit: function () {
 			var oModel = new sap.ui.model.json.JSONModel(),
 				oView = this.getView();
-
-			$.get("/AWS_case_study/res.json", function (data) {
+			var id = Math.random().toString(36).substr(2, 9);
+			$.get("/AWS_case_study/init?id=" + id, function (data) {
 				oModel.setData(data);
 				oView.setModel(oModel);
 				oView.getModel().setProperty("/afterUpload", false);
 				oView.getModel().setProperty("/afterRun", false);
+				oView.getModel().setProperty("/id_run", id);
 			});
 		},
 
@@ -31,7 +35,7 @@ sap.ui.define([
 			oUploadDialog.setTitle("Upload photo");
 			// prepare the FileUploader control
 			var oFileUploader = new sap.ui.unified.FileUploader({
-				uploadUrl: "/AWS_case_study/images/upload",
+				uploadUrl: "/AWS_case_study/images/upload?id=" + that.getView().getModel().getProperty("/id_run"),
 				name: "image",
 				uploadOnChange: false,
 				sendXHR: false,
@@ -52,8 +56,9 @@ sap.ui.define([
 					var sResponse = oEvent.getParameter("response");
 					if (sResponse) {
 						oUploadDialog.close();
+						that.getView().byId("Run").setEnabled(true);
 						that.getView().getModel().setProperty("/afterUpload", true);
-						that.getView().byId("img1").setSrc("/AWS_case_study/preview/demo.jpg?t=" + new Date().getTime());
+						that.getView().byId("img1").setSrc("/AWS_case_study/preview/demo.jpg?id=" + that.getView().getModel().getProperty("/id_run") + "#t="  + new Date().getTime());
 						sap.m.MessageToast.show("Upload complete");
 					}
 				}
@@ -80,16 +85,11 @@ sap.ui.define([
 
 		onRun: function (evt) {
 			var that = this;
-/*			var aftUp = that.getView().getModel().getProperty("/afterUpload");
-			if (!aftUp) {
-				sap.m.MessageToast.show("Error: Choose an Image first!");
-				return;
-			}*/
 			var input1 = this.byId("Input1").getValue();
 			var input2 = this.byId("Input2").getValue();
 			var align;
 			var check = this.byId("ch1").getSelected();
-
+			var id = this.getView().getModel().getProperty("/id_run");
 			if (check) {
 				align = check;
 			} else {
@@ -109,7 +109,8 @@ sap.ui.define([
 				"data": {
 					"pixel_thres": input1,
 					"link_thres": input2,
-					"align": align
+					"align": align,
+					"id": id
 				}
 			};
 			this.oDialog = sap.ui.xmlfragment("cs.case_study.view.BusyDialog", this);
@@ -123,15 +124,18 @@ sap.ui.define([
 				that.oDialog.close();
 				sap.m.MessageToast.show("Error: " + response.message);
 			});
+
 		},
 
 		handleRefresh: function (evt) {
-			setTimeout(function () {
+				setTimeout(function () {
 				var oModel = this.getView().getModel();
-				oModel.loadData("/AWS_case_study/res.json");
-				this.getView().byId("img2").setSrc("/AWS_case_study/images/demo_res.jpg?t=" + new Date().getTime());
-				this.getView().byId("img3").setSrc("/AWS_case_study/images/demo_text.png?t=" + new Date().getTime());
-			}.bind(this), 1000);
+				var id = oModel.getProperty("/id_run");
+				oModel.loadData("/AWS_case_study/res.json?id=" + id);
+				this.getView().byId("img1").setSrc("/AWS_case_study/preview/demo.jpg?id=" + id + "#t="  + new Date().getTime());
+				this.getView().byId("img2").setSrc("/AWS_case_study/images/demo_res.jpg?id=" + id + "#t="  + new Date().getTime());
+				this.getView().byId("img3").setSrc("/AWS_case_study/images/demo_text.png?id=" + id + "#t="  + new Date().getTime());
+						}.bind(this), 1000);
 		},
 
 		handleTableSelectDialogPress: function (oEvent) {

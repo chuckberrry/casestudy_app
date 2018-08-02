@@ -12,9 +12,9 @@
 				</customHeader>
 				<content>
 					<Button text="Upload Image" press="openUploadDialog"></Button>
-					<Button type="Emphasized" text="Run" press="onRun"/>
+					<Button id = "Run" type="Emphasized" text="Run" press="onRun" enabled = "false"/>
 					<VBox>
-						<Image id="img1" alt="Image Preview" src="/AWS_case_study/preview/demo.jpg" width="12rem" height="9rem" visible="{/afterUpload}"/>
+						<Image id="img1" alt="Image Preview" src='formatter("/AWS_case_study/preview/demo.jpg?id=")' width="12rem" height="9rem" visible="{/afterUpload}"/>
 					</VBox>
 					<Panel expandable="true" expanded="false" headerText="Expert Mode" width="auto" class="sapUiResponsiveMargin">
 						<content>
@@ -32,12 +32,12 @@
 					</Panel>
 					<Panel expandable="true" expanded="false" headerText="Show/Hide Textbox Result" width="auto" class="sapUiResponsiveMargin">
 						<content>
-							<Image id="img2" visible="{/afterRun}" alt="Textbox Image" src="/AWS_case_study/images/demo_res.jpg" width="36rem" height="27rem"/>
+							<Image id="img2" visible="{/afterRun}" alt="Textbox Image" src='formatter("/AWS_case_study/images/demo_res.jpg?id=")' width="36rem" height="27rem"/>
 						</content>
 					</Panel>
 					<Panel expandable="true" expanded="false" headerText="Show/Hide Image with Results" width="auto" class="sapUiResponsiveMargin">
 						<content>
-							<Image id="img3" visible="{/afterRun}" alt="Textbox Image with Results" src="/AWS_case_study/images/demo_text.png" width="36rem"
+							<Image id="img3" visible="{/afterRun}" alt="Textbox Image with Results" src='formatter("/AWS_case_study/images/demo_res.png?id=")' width="36rem"
 								height="27rem"/>
 						</content>
 					</Panel>
